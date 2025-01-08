@@ -20,7 +20,36 @@ Keyboard.MAIN = {
         keyboard: [
             [
                 {
-                    text: buttons_1.BUTTONS.START,
+                    text: buttons_1.BUTTONS.VAPE,
+                },
+            ],
+            [
+                {
+                    text: buttons_1.BUTTONS.LIQUID,
+                },
+            ],
+            [
+                {
+                    text: buttons_1.BUTTONS.ACCESSORIES,
+                },
+            ],
+        ],
+    },
+};
+Keyboard.CHECKOUT = {
+    parse_mode: "HTML",
+    disable_web_page_preview: true,
+    reply_markup: {
+        resize_keyboard: true,
+        keyboard: [
+            [
+                {
+                    text: buttons_1.BUTTONS.ORDER,
+                },
+            ],
+            [
+                {
+                    text: buttons_1.BUTTONS.MAIN,
                 },
             ],
         ],

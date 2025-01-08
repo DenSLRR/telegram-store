@@ -4,6 +4,7 @@ import {DbService} from "./db";
 import {BotResponse} from "./response";
 import {USER_STATE} from "./types/state";
 import {BUTTONS} from "./constatnts/buttons";
+import {MESSAGES} from "./constatnts/messages";
 
 
 async function main () {
@@ -38,9 +39,17 @@ async function main () {
             switch (userState) {
                 case USER_STATE.MAIN:
                     // return await response.start(chat_id);
-                    return bot.sendMessage(chat_id, 'hello');
+                    return bot.sendMessage(chat_id, MESSAGES.START);
             }
 
+        }
+
+
+        switch (text) {
+            case BUTTONS.VAPE:
+                return await response.getVape(chat_id)
+            case BUTTONS.MAIN:
+                return await response.start(chat_id)
         }
 
 

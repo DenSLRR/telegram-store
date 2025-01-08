@@ -3,6 +3,7 @@ import {DbService} from "./db";
 import {USER_STATE, UserStateValues} from "./types/state";
 import {MESSAGES} from "./constatnts/messages";
 import {Keyboard} from "./keybord";
+import {VAPE} from "./constatnts/inventory";
 
 
 
@@ -29,10 +30,18 @@ export class BotResponse {
     }
 
     async start(chatId: string) {
-        this.setState(chatId, USER_STATE.MAIN)
-
+        // this.setState(chatId, USER_STATE.MAIN)
         return await this._bot.sendMessage(chatId, MESSAGES.START, Keyboard.MAIN )
+    }
 
+
+    async getVape(chatId: string) {
+        for (const item of VAPE) {
+            let text = `${item.name}\n\n${item.description}\n\nНомер товара: ${item.id}\nЦена: ${item.price} лей`;
+            await this._bot.sendMessage(chatId, text, Keyboard.EMPTY); // Ждём завершения отправки каждого сообщения
+        }
+
+        return await this._bot.sendMessage(chatId, 'Для продолжения нажмите на кнопку ⬇️', Keyboard.CHECKOUT);
     }
 
 

@@ -20,11 +20,38 @@ export class Keyboard {
             keyboard: [
                 [
                     {
-                        text: BUTTONS.START,
+                        text: BUTTONS.VAPE,
                     },
                 ],
-
-
+                [
+                    {
+                        text: BUTTONS.LIQUID,
+                    },
+                ],
+                [
+                    {
+                        text: BUTTONS.ACCESSORIES,
+                    },
+                ],
+            ],
+        },
+    }
+    static CHECKOUT  = {
+        parse_mode: "HTML" as ParseMode,
+        disable_web_page_preview: true,
+        reply_markup: {
+            resize_keyboard: true,
+            keyboard: [
+                [
+                    {
+                        text: BUTTONS.ORDER,
+                    },
+                ],
+                [
+                    {
+                        text: BUTTONS.MAIN,
+                    },
+                ],
             ],
         },
     }

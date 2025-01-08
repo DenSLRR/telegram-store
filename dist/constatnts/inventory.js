@@ -1,4 +1,7 @@
-export const VAPE: InventoryVapeProps[] = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VAPE = void 0;
+exports.VAPE = [
     {
         id: 1,
         name: 'Elf Bar 1000',
@@ -59,11 +62,4 @@ export const VAPE: InventoryVapeProps[] = [
         price: 270,
         description: 'Tropical fruits'
     }
-]
-
-export interface InventoryVapeProps {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-}
+];

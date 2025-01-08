@@ -8,6 +8,8 @@ const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api")
 const db_1 = require("./db");
 const response_1 = require("./response");
 const state_1 = require("./types/state");
+const buttons_1 = require("./constatnts/buttons");
+const messages_1 = require("./constatnts/messages");
 async function main() {
     if (!process.env.TG_TOKEN) {
         throw new Error('TG_TOKEN is required');
@@ -26,8 +28,14 @@ async function main() {
             switch (userState) {
                 case state_1.USER_STATE.MAIN:
                     // return await response.start(chat_id);
-                    return bot.sendMessage(chat_id, 'hello');
+                    return bot.sendMessage(chat_id, messages_1.MESSAGES.START);
             }
+        }
+        switch (text) {
+            case buttons_1.BUTTONS.VAPE:
+                return await response.getVape(chat_id);
+            case buttons_1.BUTTONS.MAIN:
+                return await response.start(chat_id);
         }
         if (text == '/start') {
             return await response.start(chat_id);
