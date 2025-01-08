@@ -1,0 +1,24 @@
+{
+  "name": "telegramstore",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsc-watch --onSuccess 'node dist/index.js'",
+    "build": "tsc",
+    "start": "npm run build && node ./dist/index.js",
+    "prismanest": "npx prisma db push --accept-data-loss && npx prisma generate"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "tsc-watch": "^6.2.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
