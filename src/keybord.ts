@@ -44,12 +44,36 @@ export class Keyboard {
             keyboard: [
                 [
                     {
-                        text: BUTTONS.ORDER,
+                        text: BUTTONS.CHECKOUT,
                     },
                 ],
                 [
                     {
                         text: BUTTONS.MAIN,
+                    },
+                ],
+            ],
+        },
+    }
+    static ADD_OR_NO  = {
+        parse_mode: "HTML" as ParseMode,
+        disable_web_page_preview: true,
+        reply_markup: {
+            resize_keyboard: true,
+            keyboard: [
+                [
+                    {
+                        text: BUTTONS.ADD,
+                    },
+                ],
+                [
+                    {
+                        text: BUTTONS.SET_ITEMS,
+                    },
+                ],
+                [
+                    {
+                        text: BUTTONS.CANCEL,
                     },
                 ],
             ],

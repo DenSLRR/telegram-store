@@ -38,8 +38,11 @@ async function main () {
         if(userState) {
             switch (userState) {
                 case USER_STATE.MAIN:
-                    // return await response.start(chat_id);
                     return bot.sendMessage(chat_id, MESSAGES.START);
+                case USER_STATE.START_ORDER:
+                    return response.orderWhatItem(chat_id, text)
+                case USER_STATE.ASKING_COUNT:
+                    return response.orderSetProductCount(chat_id, text)
             }
 
         }
@@ -50,6 +53,13 @@ async function main () {
                 return await response.getVape(chat_id)
             case BUTTONS.MAIN:
                 return await response.start(chat_id)
+            case BUTTONS.CHECKOUT:
+                return await response.startOrder(chat_id)
+            case BUTTONS.ADD:
+                return await response.startOrder(chat_id)
+            case BUTTONS.CANCEL:
+                return await response.cancel(chat_id)
+
         }
 
 

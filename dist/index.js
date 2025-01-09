@@ -27,8 +27,11 @@ async function main() {
         if (userState) {
             switch (userState) {
                 case state_1.USER_STATE.MAIN:
-                    // return await response.start(chat_id);
                     return bot.sendMessage(chat_id, messages_1.MESSAGES.START);
+                case state_1.USER_STATE.START_ORDER:
+                    return response.orderWhatItem(chat_id, text);
+                case state_1.USER_STATE.ASKING_COUNT:
+                    return response.orderSetProductCount(chat_id, text);
             }
         }
         switch (text) {
@@ -36,6 +39,12 @@ async function main() {
                 return await response.getVape(chat_id);
             case buttons_1.BUTTONS.MAIN:
                 return await response.start(chat_id);
+            case buttons_1.BUTTONS.CHECKOUT:
+                return await response.startOrder(chat_id);
+            case buttons_1.BUTTONS.ADD:
+                return await response.startOrder(chat_id);
+            case buttons_1.BUTTONS.CANCEL:
+                return await response.cancel(chat_id);
         }
         if (text == '/start') {
             return await response.start(chat_id);

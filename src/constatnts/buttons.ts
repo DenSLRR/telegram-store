@@ -3,7 +3,11 @@ export const BUTTONS = {
     VAPE: 'Электронные сигареты 🚬',
     ACCESSORIES: 'Аксуссуары 💍',
     MAIN: 'Главное меню ❌',
-    ORDER: 'Заказать ✅'
+    CHECKOUT: 'Заказать ✅',
+    ADD: 'Добавить еще товар 🎆',
+    SET_ITEMS: 'Завершить ✅',
+    CANCEL: 'Отменить ❌'
+
 
 
 }
