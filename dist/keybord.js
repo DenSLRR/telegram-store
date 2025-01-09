@@ -23,16 +23,16 @@ Keyboard.MAIN = {
                     text: buttons_1.BUTTONS.VAPE,
                 },
             ],
-            [
-                {
-                    text: buttons_1.BUTTONS.LIQUID,
-                },
-            ],
-            [
-                {
-                    text: buttons_1.BUTTONS.ACCESSORIES,
-                },
-            ],
+            // [
+            //     {
+            //         text: BUTTONS.LIQUID,
+            //     },
+            // ],
+            // [
+            //     {
+            //         text: BUTTONS.ACCESSORIES,
+            //     },
+            // ],
         ],
     },
 };

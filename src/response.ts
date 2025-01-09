@@ -3,7 +3,10 @@ import {DbService} from "./db";
 import {USER_STATE, UserStateValues} from "./types/state";
 import {MESSAGES} from "./constatnts/messages";
 import {Keyboard} from "./keybord";
-import {VAPE} from "./constatnts/inventory";
+import {InventoryVapeProps, VAPE} from "./constatnts/inventory";
+import {getRandomId} from "./utils/random-id";
+import "dotenv/config";
+
 
 
 
@@ -18,6 +21,7 @@ export class BotResponse {
     _personName: string  = '';
     _personAddress: string  = '';
     _personPhone: string  = '';
+    leadsId = process.env.LEADS_CHATID!
 
 
     constructor(
@@ -28,6 +32,7 @@ export class BotResponse {
         this._db = db;
 
     }
+
 
     setState (chatId: string, state: UserStateValues) {
         this._state[chatId] = state;
@@ -50,6 +55,7 @@ export class BotResponse {
 
         return await this._bot.sendMessage(chatId, 'Для продолжения нажмите на кнопку ⬇️', Keyboard.CHECKOUT);
     }
+
     async cancel(chatId: string) {
         this.setState(chatId, USER_STATE.MAIN)
         this._itemName = ''
@@ -61,6 +67,12 @@ export class BotResponse {
 
 
         return this.bot.sendMessage(chatId, 'Окей, давай попробуем еще раз 😇', Keyboard.MAIN);
+    }
+
+     getOrderById(orderId: number, arr: InventoryVapeProps[] ): InventoryVapeProps | null {
+         const res = arr.find(item => item.id === orderId);
+         if (!res) return null;
+         return res;
     }
 
     async startOrder(chatId: string) {
@@ -93,6 +105,7 @@ export class BotResponse {
 
         return await this._bot.sendMessage(chatId, MESSAGES.PROVIDE_PERSON_NAME, Keyboard.EMPTY);
     }
+
     async getUserName(chatId: string, name: string) {
         this._personName = name;
         this.setState(chatId, USER_STATE.GET_ADDRESS);
@@ -113,7 +126,17 @@ export class BotResponse {
     async getUserPhone(chatId: string, phone: string) {
         this._personPhone = phone;
         this.setState(chatId, USER_STATE.CONFIRM_ORDER);
-        return  await  this.bot.sendMessage(chatId, MESSAGES.CONFIRM_ORDER, Keyboard.CONFIRM_ORDER);
+        await  this.bot.sendMessage(chatId, MESSAGES.CONFIRM_ORDER, Keyboard.CONFIRM_ORDER);
+        let text = `Заказ:\n\nВаше имя: ${this._personName}\nАдрес доставки: ${this._personAddress}\nВаш номер телефона: ${this._personPhone}\n\n Вы заказали:\n\n`
+
+        this._order.map(item => {
+            const product = this.getOrderById(+item.itemId, VAPE)
+
+            if (!product) return
+
+            text += `${product.name} x${item.count} - ${+product.price * +item.count}\n\n`;
+        })
+        return await this.bot.sendMessage(chatId, text);
 
     }
 
@@ -122,9 +145,21 @@ export class BotResponse {
             name: this._personName,
             address: this._personAddress,
             phone: this._personPhone,
-            items: this._order
+            items: this._order,
+            orderId: getRandomId()
         }
-        let text = `Ваше имя: ${this._personName}\nАдрес доставки: ${this._personAddress}\nВаш номер телефона: ${this._personPhone}\n\n`
+        let text = `Номер заказа: ${res.orderId}\n\nИмя: ${res.name}\nАдрес доставки: ${res.address}\nНомер телефона: ${res.phone}\n\n`;
+
+
+        this._order.map(item => {
+            const product = this.getOrderById(+item.itemId, VAPE)
+
+            if (!product) return
+
+            text += `${product.name} x${item.count} - ${+product.price * +item.count}\n\n`;
+        })
+
+        await this.bot.sendMessage(this.leadsId, text)
 
 
         return await this.bot.sendMessage(chatId, MESSAGES.CONGRATULATION, Keyboard.MAIN)

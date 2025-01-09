@@ -23,16 +23,16 @@ export class Keyboard {
                         text: BUTTONS.VAPE,
                     },
                 ],
-                [
-                    {
-                        text: BUTTONS.LIQUID,
-                    },
-                ],
-                [
-                    {
-                        text: BUTTONS.ACCESSORIES,
-                    },
-                ],
+                // [
+                //     {
+                //         text: BUTTONS.LIQUID,
+                //     },
+                // ],
+                // [
+                //     {
+                //         text: BUTTONS.ACCESSORIES,
+                //     },
+                // ],
             ],
         },
     }

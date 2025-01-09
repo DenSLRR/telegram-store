@@ -5,6 +5,8 @@ const state_1 = require("./types/state");
 const messages_1 = require("./constatnts/messages");
 const keybord_1 = require("./keybord");
 const inventory_1 = require("./constatnts/inventory");
+const random_id_1 = require("./utils/random-id");
+require("dotenv/config");
 class BotResponse {
     constructor(bot, db) {
         this.bot = bot;
@@ -16,6 +18,7 @@ class BotResponse {
         this._personName = '';
         this._personAddress = '';
         this._personPhone = '';
+        this.leadsId = process.env.LEADS_CHATID;
         this._bot = bot;
         this._db = db;
     }
@@ -45,6 +48,12 @@ class BotResponse {
         this._personAddress = '';
         this._personPhone = '';
         return this.bot.sendMessage(chatId, 'Окей, давай попробуем еще раз 😇', keybord_1.Keyboard.MAIN);
+    }
+    getOrderById(orderId, arr) {
+        const res = arr.find(item => item.id === orderId);
+        if (!res)
+            return null;
+        return res;
     }
     async startOrder(chatId) {
         this.setState(chatId, state_1.USER_STATE.START_ORDER);
@@ -82,16 +91,32 @@ class BotResponse {
     async getUserPhone(chatId, phone) {
         this._personPhone = phone;
         this.setState(chatId, state_1.USER_STATE.CONFIRM_ORDER);
-        return await this.bot.sendMessage(chatId, messages_1.MESSAGES.CONFIRM_ORDER, keybord_1.Keyboard.CONFIRM_ORDER);
+        await this.bot.sendMessage(chatId, messages_1.MESSAGES.CONFIRM_ORDER, keybord_1.Keyboard.CONFIRM_ORDER);
+        let text = `Заказ:\n\nВаше имя: ${this._personName}\nАдрес доставки: ${this._personAddress}\nВаш номер телефона: ${this._personPhone}\n\n Вы заказали:\n\n`;
+        this._order.map(item => {
+            const product = this.getOrderById(+item.itemId, inventory_1.VAPE);
+            if (!product)
+                return;
+            text += `${product.name} x${item.count} - ${+product.price * +item.count}\n\n`;
+        });
+        return await this.bot.sendMessage(chatId, text);
     }
     async confirmOrder(chatId) {
         const res = {
             name: this._personName,
             address: this._personAddress,
             phone: this._personPhone,
-            items: this._order
+            items: this._order,
+            orderId: (0, random_id_1.getRandomId)()
         };
-        let text = `Ваше имя: ${this._personName}\nАдрес доставки: ${this._personAddress}\nВаш номер телефона: ${this._personPhone}\n\n`;
+        let text = `Номер заказа: ${res.orderId}\n\nИмя: ${res.name}\nАдрес доставки: ${res.address}\nНомер телефона: ${res.phone}\n\n`;
+        this._order.map(item => {
+            const product = this.getOrderById(+item.itemId, inventory_1.VAPE);
+            if (!product)
+                return;
+            text += `${product.name} x${item.count} - ${+product.price * +item.count}\n\n`;
+        });
+        await this.bot.sendMessage(this.leadsId, text);
         return await this.bot.sendMessage(chatId, messages_1.MESSAGES.CONGRATULATION, keybord_1.Keyboard.MAIN);
     }
 }
