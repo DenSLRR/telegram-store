@@ -39,7 +39,7 @@ class BotResponse {
         }
         return await this._bot.sendMessage(chatId, 'Для продолжения нажмите на кнопку ⬇️', keybord_1.Keyboard.CHECKOUT);
     }
-    async cancel(chatId) {
+    async clear(chatId) {
         this.setState(chatId, state_1.USER_STATE.MAIN);
         this._itemName = '';
         this._itemCount = '';
@@ -47,6 +47,9 @@ class BotResponse {
         this._personName = '';
         this._personAddress = '';
         this._personPhone = '';
+    }
+    async cancel(chatId) {
+        await this.clear(chatId);
         return this.bot.sendMessage(chatId, 'Окей, давай попробуем еще раз 😇', keybord_1.Keyboard.MAIN);
     }
     getOrderById(orderId, arr) {
@@ -117,6 +120,7 @@ class BotResponse {
             text += `${product.name} x${item.count} - ${+product.price * +item.count}\n\n`;
         });
         await this.bot.sendMessage(this.leadsId, text);
+        await this.clear(chatId);
         return await this.bot.sendMessage(chatId, messages_1.MESSAGES.CONGRATULATION, keybord_1.Keyboard.MAIN);
     }
 }

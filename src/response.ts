@@ -56,7 +56,7 @@ export class BotResponse {
         return await this._bot.sendMessage(chatId, 'Для продолжения нажмите на кнопку ⬇️', Keyboard.CHECKOUT);
     }
 
-    async cancel(chatId: string) {
+    async clear (chatId: string) {
         this.setState(chatId, USER_STATE.MAIN)
         this._itemName = ''
         this._itemCount = ''
@@ -64,10 +64,15 @@ export class BotResponse {
         this._personName = '';
         this._personAddress = '';
         this._personPhone = '';
+    }
 
+    async cancel(chatId: string) {
+        await this.clear(chatId);
 
         return this.bot.sendMessage(chatId, 'Окей, давай попробуем еще раз 😇', Keyboard.MAIN);
     }
+
+
 
      getOrderById(orderId: number, arr: InventoryVapeProps[] ): InventoryVapeProps | null {
          const res = arr.find(item => item.id === orderId);
@@ -161,7 +166,7 @@ export class BotResponse {
 
         await this.bot.sendMessage(this.leadsId, text)
 
-
+        await this.clear(chatId);
         return await this.bot.sendMessage(chatId, MESSAGES.CONGRATULATION, Keyboard.MAIN)
     }
 
