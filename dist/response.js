@@ -13,6 +13,9 @@ class BotResponse {
         this._itemName = '';
         this._itemCount = '';
         this._order = [];
+        this._personName = '';
+        this._personAddress = '';
+        this._personPhone = '';
         this._bot = bot;
         this._db = db;
     }
@@ -38,6 +41,9 @@ class BotResponse {
         this._itemName = '';
         this._itemCount = '';
         this._order = [];
+        this._personName = '';
+        this._personAddress = '';
+        this._personPhone = '';
         return this.bot.sendMessage(chatId, 'Окей, давай попробуем еще раз 😇', keybord_1.Keyboard.MAIN);
     }
     async startOrder(chatId) {
@@ -58,6 +64,35 @@ class BotResponse {
         });
         console.log(this._order);
         return await this._bot.sendMessage(chatId, 'Отлично!', keybord_1.Keyboard.ADD_OR_NO);
+    }
+    async startGetPersonalInfo(chatId) {
+        this.setState(chatId, state_1.USER_STATE.GET_PERSON_NAME);
+        return await this._bot.sendMessage(chatId, messages_1.MESSAGES.PROVIDE_PERSON_NAME, keybord_1.Keyboard.EMPTY);
+    }
+    async getUserName(chatId, name) {
+        this._personName = name;
+        this.setState(chatId, state_1.USER_STATE.GET_ADDRESS);
+        return await this._bot.sendMessage(chatId, messages_1.MESSAGES.PROVIDE_ADDRESS, keybord_1.Keyboard.EMPTY);
+    }
+    async getUserAddress(chatId, address) {
+        this._personAddress = address;
+        this.setState(chatId, state_1.USER_STATE.GET_PERSON_PHONE);
+        return await this._bot.sendMessage(chatId, messages_1.MESSAGES.PROVIDE_PHONE, keybord_1.Keyboard.EMPTY);
+    }
+    async getUserPhone(chatId, phone) {
+        this._personPhone = phone;
+        this.setState(chatId, state_1.USER_STATE.CONFIRM_ORDER);
+        return await this.bot.sendMessage(chatId, messages_1.MESSAGES.CONFIRM_ORDER, keybord_1.Keyboard.CONFIRM_ORDER);
+    }
+    async confirmOrder(chatId) {
+        const res = {
+            name: this._personName,
+            address: this._personAddress,
+            phone: this._personPhone,
+            items: this._order
+        };
+        let text = `Ваше имя: ${this._personName}\nАдрес доставки: ${this._personAddress}\nВаш номер телефона: ${this._personPhone}\n\n`;
+        return await this.bot.sendMessage(chatId, messages_1.MESSAGES.CONGRATULATION, keybord_1.Keyboard.MAIN);
     }
 }
 exports.BotResponse = BotResponse;

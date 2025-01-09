@@ -79,6 +79,24 @@ export class Keyboard {
             ],
         },
     }
-
+    static CONFIRM_ORDER  = {
+        parse_mode: "HTML" as ParseMode,
+        disable_web_page_preview: true,
+        reply_markup: {
+            resize_keyboard: true,
+            keyboard: [
+                [
+                    {
+                        text: BUTTONS.CONFIRM,
+                    },
+                ],
+                [
+                    {
+                        text: BUTTONS.CANCEL,
+                    },
+                ],
+            ],
+        },
+    }
 
 }

@@ -19,18 +19,12 @@ async function main () {
 
 
 
-
-
-
-
-
     bot.on("message", async (msg) => {
         const chat_id = msg.chat.id.toString();
         const user = msg.from;
         const text = msg.text;
 
         if (!text || !user) return;
-
 
 
         const userState = response.getState(chat_id)
@@ -43,6 +37,15 @@ async function main () {
                     return response.orderWhatItem(chat_id, text)
                 case USER_STATE.ASKING_COUNT:
                     return response.orderSetProductCount(chat_id, text)
+                case USER_STATE.GET_PERSON_NAME:
+                    return response.getUserName(chat_id, text)
+                case USER_STATE.GET_ADDRESS:
+                    return response.getUserAddress(chat_id, text)
+                case USER_STATE.GET_PERSON_PHONE:
+                    return response.getUserPhone(chat_id, text)
+                case USER_STATE.CONFIRM_ORDER:
+                    return response.confirmOrder(chat_id)
+
             }
 
         }
@@ -59,6 +62,8 @@ async function main () {
                 return await response.startOrder(chat_id)
             case BUTTONS.CANCEL:
                 return await response.cancel(chat_id)
+            case BUTTONS.SET_ITEMS:
+                return await response.startGetPersonalInfo(chat_id)
 
         }
 
@@ -66,9 +71,6 @@ async function main () {
         if (text == '/start') {
             return await response.start(chat_id)
         }
-
-
-
 
 
     })
